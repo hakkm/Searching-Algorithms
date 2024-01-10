@@ -44,6 +44,28 @@ class QueueFronteir(StackFronteir):
             return node
 
 
+# Greedy best-first search using the manhattan distance
+class GreedyBestFirstFronteir(QueueFronteir):
+    def __init__(self, goal):
+        super().__init__()
+        self.goal = goal
+
+    def remove(self):
+        if self.empty():
+            raise Exception("Frontier is empty")
+        else:
+            # Sort the frontier by the manhattan distance
+            self.frontier.sort(
+                key=lambda node:
+                self.manhattan_distance(node.state, self.goal))
+            node = self.frontier[0]
+            self.frontier = self.frontier[1:]
+            return node
+
+    def manhattan_distance(self, state1, state2):
+        return abs(state1[0] - state2[0]) + abs(state1[1] - state2[1])
+
+
 class Maze:
     def __init__(self, file, frontier: StackFronteir):
         self.frontier = frontier
@@ -127,7 +149,9 @@ class Maze:
 
         # Initialize frontier to just the starting position
         start = Node(state=self.start, parent=None, action=None)
-        frontier = self.frontier()
+        # checking if it is a greedy best first search
+        frontier = self.frontier(
+            self.goal) if self.frontier == GreedyBestFirstFronteir else self.frontier()
         frontier.add(start)
 
         # Initialize an empty explored set
@@ -168,7 +192,7 @@ class Maze:
 
 
 if __name__ == "__main__":
-    m = Maze("maze2.txt", QueueFronteir)
+    m = Maze("maze2.txt", GreedyBestFirstFronteir)
     print("Maze:")
     m.print()
     print("Solving...")

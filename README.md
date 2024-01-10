@@ -62,3 +62,16 @@ Solution: **Explored Set**. An explored set is a set of states that we have visi
 
 Problem: How do we decide which node to remove from the frontier?
 Solution: Treate the frontier as a Stack or Queue. **Stack**: Last In First Out (LIFO), This version of the algorithm is called **Depth-first search**. **Queue**: First In First Out (FIFO), This version of the algorithm is called **Breadth-first search**.
+
+## Types of Search Algorithms
+### Uninformed Search 
+Search strategies that use no problem-specific knowledge.
+
+### Informed Search 
+Search strategies that use problem-specific knowledge to find solutions more efficiently.
+
+#### Greedy Best-First Search 
+Search algorithm that expands the node that is closest to the goal, as estimated by a heuristic function h(n).
+
+What is a heuristic function? A heuristic function, h(n), provides an estimate of the cost from any node n to the goal.
+

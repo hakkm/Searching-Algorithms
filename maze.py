@@ -126,7 +126,7 @@ class Maze:
 
         # Initialize frontier to just the starting position
         start = Node(state=self.start, parent=None, action=None)
-        frontier = StackFronteir()
+        frontier = QueueFronteir()
         frontier.add(start)
 
         # Initialize an empty explored set
@@ -167,7 +167,7 @@ class Maze:
 
 
 if __name__ == "__main__":
-    m = Maze("maze3.txt")
+    m = Maze("maze2.txt")
     print("Maze:")
     m.print()
     print("Solving...")

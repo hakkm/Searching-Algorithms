@@ -192,7 +192,7 @@ class Maze:
 
 
 if __name__ == "__main__":
-    m = Maze("maze2.txt", GreedyBestFirstFronteir)
+    m = Maze("maze4.txt", GreedyBestFirstFronteir)
     print("Maze:")
     m.print()
     print("Solving...")

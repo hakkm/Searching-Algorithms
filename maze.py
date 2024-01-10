@@ -81,7 +81,7 @@ class Maze:
         # Determine height and width of Maze
         contents = contents.splitlines()
         self.lenght = len(contents)
-        self.width = len(contents[0])
+        self.width = max(len(line) for line in contents)
 
         # Keep track of walls
         self.walls = []

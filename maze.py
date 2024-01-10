@@ -45,7 +45,8 @@ class QueueFronteir(StackFronteir):
 
 
 class Maze:
-    def __init__(self, file):
+    def __init__(self, file, frontier: StackFronteir):
+        self.frontier = frontier
         with open(file) as f:
             contents = f.read()
 
@@ -126,7 +127,7 @@ class Maze:
 
         # Initialize frontier to just the starting position
         start = Node(state=self.start, parent=None, action=None)
-        frontier = QueueFronteir()
+        frontier = self.frontier()
         frontier.add(start)
 
         # Initialize an empty explored set
@@ -167,14 +168,11 @@ class Maze:
 
 
 if __name__ == "__main__":
-    m = Maze("maze2.txt")
+    m = Maze("maze2.txt", QueueFronteir)
     print("Maze:")
     m.print()
     print("Solving...")
     m.solve()
-    print("States Explored:", m.num_explored)
-    print("Solution:")
-    m.print()
     print("States Explored:", m.num_explored)
     print("Solution:")
     m.print()

@@ -1,4 +1,5 @@
-Title: Search - Lecture 0 - CS50's Introduction to Artificial Intelligence with Python
+> [!NOTE]
+> This is a note for the course [CS50's Introduction to Artificial Intelligence with Python, Lecture 0: Search](https://www.youtube.com/watch?v=WbzNRTTrX0g).
 # Solving Search Problems 
 
 ## Terminology

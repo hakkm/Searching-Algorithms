@@ -82,10 +82,6 @@ class AStarFronteir(GreedyBestFirstFronteir):
             # Sort the frontier by the manhattan distance
             self.frontier.sort(
                 key=lambda node: _f(node), reverse=False)
-            # for node in self.frontier:
-            #     print(
-            #         node.state, f"cost:{node.path_cost} + distance:{self.manhattan_distance(node.state, self.goal)} = ", _f(node))
-            # print("-----")
             node = self.frontier[0]
             self.frontier = self.frontier[1:]
             return node
@@ -193,11 +189,8 @@ class Maze:
                 raise Exception("No solution")
 
             # Choose a node from the frontier
-            if self.frontier == AStarFronteir:
-                node = frontier.remove()
-            else:
-                node = frontier.remove()
-            # print("after remove node cost:", node.path_cost)
+            node = frontier.remove()
+
             node.path_cost += 1
             self.num_explored += 1
 

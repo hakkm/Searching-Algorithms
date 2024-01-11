@@ -2,7 +2,7 @@ from typing import List
 
 
 class Node:
-    def __init__(self, state, parent, action, ):
+    def __init__(self, state, parent, action, path_cost=0):
         """
         Not keeping track of the path cost. This is because the path cost can
         be calculated at the end.
@@ -10,6 +10,7 @@ class Node:
         self.state: tuple = state   # (row, col)
         self.action: str = action   # "up", "down", "left", "right"
         self.parent: Node = parent  # Node object
+        self.path_cost: int = path_cost
 
 
 class StackFronteir:
@@ -64,6 +65,30 @@ class GreedyBestFirstFronteir(QueueFronteir):
 
     def manhattan_distance(self, state1, state2):
         return abs(state1[0] - state2[0]) + abs(state1[1] - state2[1])
+
+
+# A* search using the manhattan distance
+class AStarFronteir(GreedyBestFirstFronteir):
+    def __init__(self, goal):
+        super().__init__(goal)
+
+    def remove(self):
+        def _f(node):
+            return self.manhattan_distance(node.state, self.goal) + node.path_cost
+
+        if self.empty():
+            raise Exception("Frontier is empty")
+        else:
+            # Sort the frontier by the manhattan distance
+            self.frontier.sort(
+                key=lambda node: _f(node), reverse=False)
+            # for node in self.frontier:
+            #     print(
+            #         node.state, f"cost:{node.path_cost} + distance:{self.manhattan_distance(node.state, self.goal)} = ", _f(node))
+            # print("-----")
+            node = self.frontier[0]
+            self.frontier = self.frontier[1:]
+            return node
 
 
 class Maze:
@@ -150,10 +175,13 @@ class Maze:
         # Initialize frontier to just the starting position
         start = Node(state=self.start, parent=None, action=None)
         # checking if it is a greedy best first search
-        frontier = self.frontier(
-            self.goal) if self.frontier == GreedyBestFirstFronteir else self.frontier()
-        frontier.add(start)
+        # TODO: make this more elegant, maybe some design pattern concept
+        if self.frontier in [GreedyBestFirstFronteir, AStarFronteir]:
+            frontier = self.frontier(self.goal)
+        else:
+            frontier = self.frontier()
 
+        frontier.add(start)
         # Initialize an empty explored set
         # why a set? No order, no duplicates, fast membership testing
         self.explored = set()
@@ -165,7 +193,12 @@ class Maze:
                 raise Exception("No solution")
 
             # Choose a node from the frontier
-            node = frontier.remove()
+            if self.frontier == AStarFronteir:
+                node = frontier.remove()
+            else:
+                node = frontier.remove()
+            # print("after remove node cost:", node.path_cost)
+            node.path_cost += 1
             self.num_explored += 1
 
             # If node is the goal, then we have a solution
@@ -186,13 +219,15 @@ class Maze:
 
             # Add neighbors to frontier
             for action, state in self.neighbors(node.state):
+                # if not in frotier and state not explored
                 if not frontier.contains_state(state) and state not in self.explored:
-                    child = Node(state=state, parent=node, action=action)
+                    child = Node(state=state, parent=node,
+                                 action=action, path_cost=node.path_cost+1)
                     frontier.add(child)
 
 
 if __name__ == "__main__":
-    m = Maze("maze4.txt", GreedyBestFirstFronteir)
+    m = Maze("maze4.txt", AStarFronteir)
     print("Maze:")
     m.print()
     print("Solving...")

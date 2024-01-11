@@ -75,3 +75,13 @@ Search algorithm that expands the node that is closest to the goal, as estimated
 
 What is a heuristic function? A heuristic function, h(n), provides an estimate of the cost from any node n to the goal.
 
+#### A* Search 
+Search algorithm that expands node with lowest value of g(n) + h(n). 
+
+g(n) =  is the cost to reach the node.
+h(n) = is the estimated cost to the goal from node n.
+f(n) = g(n) + h(n)
+
+
+
+

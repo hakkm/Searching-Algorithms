@@ -162,6 +162,14 @@ class Maze:
                 continue
         return result
 
+    def get_frontier(self):
+        # TODO: If added more search algorithms, the structure needs to be changed
+        if self.frontier in [GreedyBestFirstFronteir, AStarFronteir]:
+            frontier = self.frontier(self.goal)
+        else:
+            frontier = self.frontier()
+        return frontier
+
     def solve(self):
         """Find a solution to maze, if one exists."""
 
@@ -171,11 +179,8 @@ class Maze:
         # Initialize frontier to just the starting position
         start = Node(state=self.start, parent=None, action=None)
         # checking if it is a greedy best first search
-        # TODO: make this more elegant, maybe some design pattern concept
-        if self.frontier in [GreedyBestFirstFronteir, AStarFronteir]:
-            frontier = self.frontier(self.goal)
-        else:
-            frontier = self.frontier()
+
+        frontier = self.get_frontier()
 
         frontier.add(start)
         # Initialize an empty explored set
